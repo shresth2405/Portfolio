@@ -1,41 +1,66 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
+# Node.js
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# Output
+.next/
+out/
+dist/
+
+# Environment variables
 .env*
+!.env.example
 
-# vercel
-.vercel
+# Local build
+.build/
 
-# typescript
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sw?
+
+# Testing
+coverage/
+*.lcov
+
+# Next.js specific
+.next/
+.next/cache/
+.next/static/
+
+# Typescript
 *.tsbuildinfo
-next-env.d.ts
+
+# Optional: if using Tailwind
+tailwind.config.js
+tailwind.config.ts
+
+# Optional: if using vercel CLI
+.vercel/
+
+# Optional: storybook
+.storybook/
+*.stories.*
+storybook-static/
+
+# Optional: system files
+*.sublime-project
+*.sublime-workspace
+
+# Optional: local fonts (if you generate them)
+public/fonts/*
+!public/fonts/.gitkeep
+
+# Optional: image optimization cache
+images-cache/

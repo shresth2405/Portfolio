@@ -8,8 +8,11 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --font-ethnocentric: var(--font-ethnocentric);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-batman: var(--font-batman);
+  --font-genesix: var(--font-genesix);
 }
 
 @media (prefers-color-scheme: dark) {
