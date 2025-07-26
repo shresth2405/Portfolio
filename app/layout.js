@@ -10,32 +10,32 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const batman = localFont({
-  src: [
-    {
-      path: '../public/fonts/batmfo__.ttf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../public/fonts/batmfo__.ttf',
-      weight: '700',
-      style: 'normal',
-    },
-  ],
-  variable: '--font-batman', // Optional: if using CSS variables
-  display: 'swap',          // Optional: improves rendering behavior
-});
+// const batman = localFont({
+//   src: [
+//     {
+//       path: '../public/fonts/batmfo__.ttf',
+//       weight: '400',
+//       style: 'normal',
+//     },
+//     {
+//       path: '../public/fonts/batmfo__.ttf',
+//       weight: '700',
+//       style: 'normal',
+//     },
+//   ],
+//   variable: '--font-batman', // Optional: if using CSS variables
+//   display: 'swap',          // Optional: improves rendering behavior
+// });
 
 const ethnocentric = localFont({
   src: [
     {
-      path: '../public/fonts/Ethnocentric Rg.otf',
+      path: '../public/fonts/Ethnocentric-Rg.otf',
       weight: '100',
       style: 'normal',
     },
     {
-      path: '../public/fonts/Ethnocentric Rg.otf',
+      path: '../public/fonts/Ethnocentric-Rg.otf',
       weight: '400',
       style: 'normal',
     },
@@ -79,7 +79,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${batman.variable} ${ethnocentric.variable} ${genesix.variable}`}>
+    <html lang="en" className={` ${ethnocentric.variable} ${genesix.variable}`}>
       <body
         className='border-2 border-t-8 border-gray-400 w-full overflow-x-hidden'
       >
