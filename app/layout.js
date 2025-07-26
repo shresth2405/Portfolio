@@ -30,12 +30,12 @@ const geistSans = Geist({
 const ethnocentric = localFont({
   src: [
     {
-      path: '../public/fonts/Ethnocentric-Rg.otf',
+      path: './fonts/Ethnocentric-Rg.otf',
       weight: '100',
       style: 'normal',
     },
     {
-      path: '../public/fonts/Ethnocentric-Rg.otf',
+      path: './fonts/Ethnocentric-Rg.otf',
       weight: '400',
       style: 'normal',
     },
@@ -46,12 +46,12 @@ const ethnocentric = localFont({
 const genesix = localFont({
   src: [
     {
-      path: '../public/fonts/Megatrans-Regular.otf',
+      path: './fonts/Megatrans-Regular.otf',
       weight: '100',
       style: 'normal',
     },
     {
-      path: '../public/fonts/Megatrans-Regular.otf',
+      path: './fonts/Megatrans-Regular.otf',
       weight: '400',
       style: 'normal',
     },
