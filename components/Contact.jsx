@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useTerminal } from "@/context/TerminalContext";
 
 function Contact() {
-  const { setSending, setHistory } = useTerminal();
+  const { setSending, setHistory, sending } = useTerminal();
 
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState("");
@@ -11,6 +11,12 @@ function Contact() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const handleSkip = ()=>{
+    setSending(false);
+    setStatus("Disabled");
+  }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,45 +46,65 @@ function Contact() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="text-white font-mono">
-      <div>
+    <form onSubmit={handleSubmit} className="text-gray-400 font-genesix font-light">
+      <div className="flex">
         <label>Name: </label>
         <input
           name="name"
+          autoComplete="off"
+          // preventDefault
+          disabled={!sending}
           value={formData.name}
           onChange={handleChange}
-          className="bg-black border p-1 mb-2 w-full"
+          className=" appearance-none border-none outline-none  border ml-3  w-full"
           required
         />
       </div>
-      <div>
+      <div className="flex">
         <label>Email: </label>
         <input
+          autoComplete="off"
           name="email"
           type="email"
+          disabled={!sending}
           value={formData.email}
           onChange={handleChange}
-          className="bg-black border p-1 mb-2 w-full"
+          className="appearance-none border-none outline-none  border ml-3  w-full"
           required
         />
       </div>
-      <div>
+      <div className="flex">
         <label>Message: </label>
         <textarea
+          autoComplete="off"
           name="message"
+          disabled={!sending}
           value={formData.message}
           onChange={handleChange}
-          className="bg-black border p-1 mb-2 w-full"
+          className="appearance-none border-none outline-none border ml-3  w-full"
           required
         />
       </div>
+      
       <button
         type="submit"
-        className="bg-green-700 px-4 py-1 rounded hover:bg-green-600"
+        disabled={!sending}
+        className="hover:text-gray-300"
       >
-        Send
+       <div>+ - - - - +</div>
+       <div>| Send |</div>
+       <div>+ - - - - + </div>
       </button>
-      <div className="mt-2">{status}</div>
+      <button
+      onClick={handleSkip}
+      disabled={!sending}
+        className=" px-4 rounded  ml-5 hover:text-gray-300"
+      >
+        <div>+ - - - - +</div>
+       <div>| Skip |</div>
+       <div>+ - - - - + </div>
+      </button>
+      <div className="mt-2 text-gray-400">{status}</div>
     </form>
   );
 }

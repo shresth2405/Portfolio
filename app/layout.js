@@ -3,6 +3,7 @@ import "./globals.css";
 import { TerminalProvider } from "@/context/TerminalContext.jsx";
 import Image from "next/image";
 import localFont from 'next/font/local';
+import BackgroundAudio from "@/components/Audio";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -80,19 +81,20 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${batman.variable} ${ethnocentric.variable} ${genesix.variable}`}>
       <body
-        className='border-amber-400 w-full h-fullb overflow-x-hidden'
+        className='border-2 border-t-8 border-gray-400 w-full overflow-x-hidden'
       >
 
         <div className="overflow-auto">
-          <Image
+          {/* <Image
             src={"/assets/batman.png"}
             width={1000}
             height={1000}
             className="absolute z-[-1] opacity-8 ml-[25%]"
             alt="batman"
-          />
+          /> */}
           <TerminalProvider>
             {children}
+            {/* <BackgroundAudio/> */}
 
           </TerminalProvider>
         </div>

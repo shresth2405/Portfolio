@@ -41,13 +41,13 @@ function Command() {
     };
 
     return (
-        <div className="text-white min-h-screen p-4 font-mono text-2xl">
+        <div className="text-white min-h-screen p-4 font-mono text-[8px] md:text-xl lg:text-2xl">
             {/* Command history */}
             {history.map((entry, index) => (
                 <div key={index}>
                     <div className="flex">
                         <span className="text-yellow-300 mr-2 mb-4 font-ethnocentric">[batman@portfolio]$</span>
-                        <span className='font-batman text-gray-400'>{entry.command}</span>
+                        <span className='font-ethnocentric text-gray-400'>{entry.command}</span>
                     </div>
                     <div className="font-bold mb-4">{entry.output}</div>
                 </div>
@@ -57,7 +57,7 @@ function Command() {
             <div className="flex">
                 {!sending && <span className="text-yellow-300 mr-2 font-ethnocentric">[batman@portfolio]$</span>}
                 <input
-                    className=" text-white border-none outline-none w-full font-batman"
+                    className=" text-gray-400 border-none outline-none w-full font-ethnocentric "
                     disabled={sending}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
