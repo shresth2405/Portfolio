@@ -8,6 +8,7 @@ import Resume from "@/components/Resume";
 import Help from "@/components/Help";
 import Clear from "@/components/Clear";
 import Contact from "@/components/Contact";
+import Blog from "@/components/Blog";
 
 
 const TerminalContext = createContext();
@@ -54,6 +55,10 @@ export const TerminalProvider = ({ children }) => {
       setSending(true);
       setActivePage("contact");
       output = <Contact />
+    }
+    else if (command === "blogs") {
+      setActivePage("blogs");
+      output = <Blog />
     }
     else {
       setActivePage(""); // Default case4

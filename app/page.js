@@ -10,9 +10,10 @@ import BackgroundAudio from "@/components/Audio";
 export default function Home() {
 
   const [loading, setLoading] = useState(true);
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 5000); // Adjust time as needed
+    const timer = setTimeout(() => setLoading(false), 5000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -20,16 +21,30 @@ export default function Home() {
 
   return (
     <>
-  <BackgroundAudio/>
+      <BackgroundAudio />
       <div className="flex ">
-        <div className="size-fit">
+        {/* Shared responsive size between skeleton and image */}
+        <div className="relative w-[80px] md:w-[200px] lg:w-[300px] flex-shrink-0">
+          {/* Skeleton — same responsive width, auto height via aspect ratio */}
+          {!imgLoaded && (
+            <div className="animate-pulse bg-gray-800 rounded w-full aspect-[2/1]" />
+          )}
+          {/* Image always in DOM so onLoad fires reliably */}
           <Image
             src={"/assets/batman1.png"}
             width={400}
             height={200}
             alt="batman"
-          >
-          </Image>
+            onLoad={() => setImgLoaded(true)}
+            className="w-full h-auto"
+            style={{
+              opacity: imgLoaded ? 1 : 0,
+              // transition: "opacity 0.3s ease",
+              position: imgLoaded ? "static" : "absolute",
+              top: 0,
+              left: 0,
+            }}
+          />
         </div>
 
         <div className=" flex flex-col justify-between text-[8px] md:text-xl lg:text-2xl mt-3 lg:mt-7 font-ethnocentric font-light text-gray-400">

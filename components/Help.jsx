@@ -4,6 +4,7 @@ function Help() {
   const commands = [
     { command: "identity", description: "Reveal the identity" },
     { command: "projects", description: "Display the list of featured projects" },
+    { command: "blogs", description: "Read my open source journey blogs" },
     { command: "contact", description: "Ways to reach out — if you're not a bot" },
     { command: "clear", description: "Clear the terminal screen" },
     { command: "resume", description: "Get my resume" },
