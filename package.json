@@ -15,8 +15,8 @@
     "next": "^15.4.2-canary.17",
     "nodemailer": "^7.0.5",
     "postcss": "^8.5.6",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "react-xtermjs": "^1.0.10"
   },
   "devDependencies": {
