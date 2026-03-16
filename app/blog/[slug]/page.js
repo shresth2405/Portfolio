@@ -23,14 +23,20 @@ export default function BlogPage({ params }) {
         let i = 0;
 
         const parseLine = (line) => {
-            // bold: **text**
-            const parts = line.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
+            // Split on bold (**text**), inline code (`text`), and markdown links ([text](url))
+            // IMPORTANT: no sub-capturing groups inside the link pattern to avoid split returning
+            // each sub-group as a separate element (which caused the "shows 3x" bug).
+            const parts = line.split(/(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\))/g);
             return parts.map((part, j) => {
                 if (part.startsWith('**') && part.endsWith('**')) {
                     return <strong key={j}>{part.slice(2, -2)}</strong>;
                 }
                 if (part.startsWith('`') && part.endsWith('`')) {
                     return <code key={j} className="bg-gray-800 text-yellow-300 px-1 rounded text-sm font-mono">{part.slice(1, -1)}</code>;
+                }
+                const linkMatch = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+                if (linkMatch) {
+                    return <a key={j} href={linkMatch[2]} target="_blank" rel="noopener noreferrer" className="text-yellow-400 underline hover:text-yellow-200 transition-colors">{linkMatch[1]}</a>;
                 }
                 return part;
             });

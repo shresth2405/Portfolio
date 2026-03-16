@@ -72,4 +72,84 @@ In the next posts, I'll explore the concepts I had to learn along the way, start
 
 **How Linux processes actually work.**`,
     },
+    {
+        slug: "preparing-to-read-criu-codebase",
+        title: "Preparing to Read the CRIU Codebase: Learning Linux Internals From Scratch",
+        date: "2026-03-16",
+        tags: ["open-source", "linux", "criu", "ptrace", "systems-programming"],
+        content: `# Preparing to Read the CRIU Codebase: Learning Linux Internals From Scratch
+
+When I first discovered CRIU, I was excited to start reading the codebase immediately.
+
+That excitement lasted for about five minutes.
+
+The moment I opened the repository, I realized something important: I didn't yet have the mental model required to understand what was happening. The project works very closely with Linux internals, and many concepts that appeared in the code — namespaces, cgroups, ptrace, \`/proc\`, ELF structures — were things I had either only heard about or never explored in practice.
+
+At that point, it became clear that before contributing to CRIU, I first needed to **build the foundation required to read it**.
+
+## The Knowledge Gap
+
+CRIU interacts deeply with how Linux represents processes and their state. To understand even a small part of the codebase, I needed to get comfortable with several Linux concepts:
+
+- **Namespaces** – how Linux isolates resources like PIDs, mounts, and networks
+- **cgroups** – how processes are grouped and resource limits are enforced
+- **The \`/proc\` filesystem** – the interface through which user space programs inspect process state
+- **\`ptrace\`** – the mechanism used by debuggers to inspect and control processes
+- **Memory layouts** – how a process's memory is organized
+
+At the beginning, these topics felt scattered. Each one opened up another rabbit hole.
+
+But slowly, they started forming a picture of how Linux actually manages processes.
+
+## Learning by Experimenting
+
+I strongly prefer learning through hands-on experiments rather than just reading documentation. So instead of only studying theory, I started building small experiments around these concepts.
+
+One of the most interesting exercises was building **a simple debugger using \`ptrace\`**. This helped me understand how debuggers interact with processes — attaching to them, inspecting their state, and controlling execution.
+
+Working with \`ptrace\` made the relationship between user space tools and the kernel much clearer.
+
+Alongside that, I also practiced working with **namespaces** and explored how Linux exposes system information through the \`/proc\` filesystem. These experiments helped me understand how processes, files, and system resources are represented internally.
+
+## Hands-on Exercises
+
+To make these concepts more concrete, I implemented several small experiments and practice programs while learning these topics. Instead of keeping them locally, I documented them in a repository so that I could track my learning process and revisit these experiments later.
+
+The exercises included things like:
+
+- Writing a **simple debugger using \`ptrace\`**
+- Experimenting with **process attachment using \`PTRACE_ATTACH\` and \`PTRACE_SEIZE\`**
+- Exploring **Linux namespaces** and how processes behave inside them
+- Inspecting process state through the **\`/proc\` filesystem**
+- Understanding **file-backed memory mappings and inodes**
+- Observing how **process memory regions appear in \`/proc/<pid>/maps\`**
+
+All of these small practice programs are available in my practice repository: [shresth2405/Criu-hands-on-practice](https://github.com/shresth2405/Criu-hands-on-practice)
+
+These exercises helped bridge the gap between theoretical concepts and real system behavior. Seeing how these mechanisms actually work on a running Linux system made the learning process much clearer.
+
+## An Unexpected Pause
+
+This exploration phase lasted for about half a month. I was slowly building confidence with these Linux internals.
+
+Then something familiar to every student happened — **semester exams arrived**.
+
+My 5th semester endsems forced me to pause this exploration for a while. Like many side projects, learning systems programming had to temporarily give way to academic responsibilities.
+
+But once the exams were over, I returned to the process of learning and experimenting.
+
+## Getting Ready to Read Real Systems Code
+
+After spending time understanding these foundational pieces — namespaces, ptrace, process inspection, memory layouts — I finally felt more comfortable approaching the CRIU codebase again.
+
+The difference was noticeable.
+
+Concepts that previously looked cryptic in the code were now recognizable. I could begin connecting the theory I had studied with the way a real system-level project implements it.
+
+This phase of preparation might not have produced immediate contributions, but it was essential. Without building that mental model first, reading the code would have felt like navigating a maze without a map.
+
+Now, with that groundwork in place, the next step was clear:
+
+**start reading the CRIU source code seriously and begin working toward real contributions.**`,
+    },
 ];
