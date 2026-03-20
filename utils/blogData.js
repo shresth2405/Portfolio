@@ -152,4 +152,155 @@ Now, with that groundwork in place, the next step was clear:
 
 **start reading the CRIU source code seriously and begin working toward real contributions.**`,
     },
+    {
+        slug: "mistake-that-slowed-me-down",
+        title: "The Mistake That Slowed Me Down: Trying to Solve Problems Before Understanding the System",
+        date: "2026-03-20",
+        tags: ["open-source", "linux", "criu", "systems-programming", "learning"],
+        content: `# The Mistake That Slowed Me Down: Trying to Solve Problems Before Understanding the System
+
+After spending hours building my foundation in Linux internals, I felt ready to take the next step: contributing to CRIU.
+
+But instead of approaching it the right way, I made a decision that, in hindsight, slowed me down significantly.
+
+I thought:
+
+> "Let me explore issues first so I understand the problems before reading the code."
+
+At a high level, this sounds logical. It's a common approach in web development or application-level projects — you look at an issue, understand the requirement, and then dive into the code.
+
+But CRIU is not that kind of project.
+
+## The Wrong Assumption
+
+What I failed to realize was that **low-level systems code does not work like high-level application code**.
+
+In high-level development:
+
+* You can often understand a problem from the issue description
+* You can jump into code and patch things incrementally
+
+But in CRIU:
+
+* The "problem" is deeply tied to **Linux internals**
+* The code reflects **complex system behaviour**
+* Without a mental model of the system, the issue itself doesn't fully make sense
+
+So by trying to understand issues first, I was essentially trying to solve problems **without understanding the system they exist in**.
+
+## Exploring Issues Without Context
+
+Even then, I continued down that path.
+
+I explored multiple issues, including:
+
+* **MPTCP support**
+* **io_uring support**
+* **POSIX message queues**
+
+At first, these sounded like interesting and meaningful areas to work on.
+
+But every time I tried to go deeper, I hit the same wall:
+
+I couldn't understand **why the problem existed**.
+
+Not because the issues were unclear — but because I didn't yet understand:
+
+* how CRIU interacts with these subsystems
+* what assumptions the codebase makes
+* how Linux behaves in these scenarios
+
+I was reading problems, but I wasn't equipped to interpret them.
+
+## Months of Friction
+
+This phase lasted longer than I expected.
+
+I was reading, exploring, and trying to connect things — but progress felt slow. It wasn't a complete waste, but it lacked direction.
+
+Looking back, the issue wasn't effort. It was **approach**.
+
+I was trying to think like someone who already understood the system, without actually building that understanding first.
+
+## Changing the Approach
+
+Eventually, after struggling for quite some time, I decided to change strategy.
+
+Instead of chasing issues, I went back to something more fundamental:
+
+**understanding the core files of the CRIU codebase.**
+
+I started focusing on:
+
+* \`cr-dump.c\` — how CRIU performs the dump phase
+* \`cr-restore.c\` — how it reconstructs processes
+* \`pstree.c\` — how process relationships are managed
+
+This time, the goal wasn't to solve anything.
+
+It was simply to understand:
+
+* what the code is doing
+* how the flow works
+* how different components interact
+
+## The First Signs of Clarity
+
+As I started following the **dump → restore flow**, things began to make more sense.
+
+For the first time, I could see:
+
+* how CRIU walks the process tree
+* how it collects process state
+* how it reconstructs that state during restore
+
+It wasn't perfect understanding, but it was **structured understanding** — which is very different from randomly exploring issues.
+
+## A Small but Important Change: Writing Notes
+
+Another mistake I realized was that I wasn't retaining what I learned.
+
+So this time, I started **writing notes while reading the code**.
+
+Not detailed documentation — just:
+
+* steps of the dump process
+* order of operations
+* key functions and their roles
+
+This helped in two ways:
+
+1. I didn't have to "re-learn" things repeatedly
+2. I could slowly build a **mental model of the system**
+
+And that mental model was exactly what I was missing earlier.
+
+## Another Pause
+
+Just when things started to feel clearer, something familiar happened again:
+
+**mid-semester exams.**
+
+Once again, the learning process paused.
+
+And once again, I had to come back and rebuild momentum.
+
+## Where I Stand Now
+
+By the time I returned and continued this process, it was already **March**.
+
+Looking back, it might seem like slow progress.
+
+But something important had changed:
+
+I was no longer trying to jump into problems blindly.
+
+I was starting to understand the **roots of the system**.
+
+And that changes everything.
+
+Because in low-level systems work, progress doesn't come from quickly solving issues — it comes from building the ability to **see why the issue exists in the first place**.
+
+In the next part of this journey, I'll go deeper into how I started understanding the **actual flow of CRIU's dump and restore process**, and how that finally allowed me to approach problems with clarity instead of confusion.`,
+    },
 ];
