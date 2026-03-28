@@ -303,4 +303,146 @@ Because in low-level systems work, progress doesn't come from quickly solving is
 
 In the next part of this journey, I'll go deeper into how I started understanding the **actual flow of CRIU's dump and restore process**, and how that finally allowed me to approach problems with clarity instead of confusion.`,
     },
+    {
+        slug: "finding-my-direction-in-criu",
+        title: "From Understanding the System to Choosing a Problem: Finding My Direction in CRIU",
+        date: "2026-03-28",
+        tags: ["open-source", "linux", "criu", "copy-on-write", "systems-programming", "gsoc"],
+        content: `# From Understanding the System to Choosing a Problem: Finding My Direction in CRIU
+
+After spending months building a foundation, reading core files, and understanding the dump and restore flow, I finally reached a stage where the codebase no longer felt completely unfamiliar. I could follow the execution path, recognize major components, and most importantly, understand how different pieces of the system connected.
+
+That was the point where I felt ready to take the next meaningful step:
+
+**choosing a problem to work on.**
+
+## Exploring Issues and Recommendations
+
+This time, my approach was different from before.
+
+Earlier, I had tried to explore issues without understanding the system, which led to confusion. But now, after developing a mental model of how CRIU works, reading issues felt much more structured.
+
+So I started carefully going through:
+
+* Issues listed in the CRIU GitHub repository
+* Discussions and recommendations from previous contributors and students
+* Suggestions from maintainers about areas that needed improvement
+
+Instead of randomly jumping into problems, I tried to understand:
+
+* What subsystem the issue belonged to
+* Why the problem existed
+* What part of the system was affected
+
+That process led me to a problem that immediately caught my attention:
+
+**Optimize Copy-on-Write Memory Dumping in CRIU**
+
+## Discovering Copy-on-Write
+
+At first, the title itself raised many questions.
+
+What exactly is Copy-on-Write?
+Why does CRIU need to optimize it?
+Where does it appear in the dump process?
+
+So before thinking about implementation, I focused on understanding the underlying mechanism.
+
+I started reading about **Copy-on-Write (COW)** and how operating systems use it to optimize memory management. The idea is simple but powerful:
+
+Instead of copying memory immediately, the system delays the copy until a write operation actually happens.
+
+This allows multiple processes to share the same memory pages efficiently, reducing unnecessary duplication and improving performance.
+
+But in the context of checkpointing and restoring processes, this mechanism introduces complexity.
+
+CRIU must carefully decide:
+
+* which memory pages need to be dumped
+* which pages can be reused
+* when a page has been modified
+* how to maintain consistency during restore
+
+Understanding this behavior helped me see why optimizing COW dumping is both important and challenging.
+
+## Studying the Problem in Depth
+
+Once I understood the theory, I went back to the problem description and started reading it more carefully.
+
+This time, the details made sense.
+
+I could connect the issue with:
+
+* memory mappings
+* page states
+* dump performance
+* restore correctness
+
+Instead of seeing the problem as a vague requirement, I could see it as a concrete system behavior that needed improvement.
+
+That shift in understanding made the problem feel approachable.
+
+## Learning by Implementing
+
+To strengthen my understanding, I decided to go beyond reading.
+
+I took the liberty of implementing small practical experiments related to Copy-on-Write behavior.
+
+These experiments helped me observe:
+
+* how memory pages are shared between processes
+* when copies are triggered
+* how memory changes appear in system inspection tools
+* how write operations affect page states
+
+Seeing the mechanism in action made the concept much clearer than reading documentation alone.
+
+It also helped me connect theoretical knowledge with real system behavior — something that has been a recurring theme throughout this journey.
+
+## Starting the Proposal Journey
+
+After spending time understanding the mechanism and the problem, I reached another milestone:
+
+**starting my proposal.**
+
+Before writing anything, I studied proposals from previous contributors.
+
+I wanted to understand:
+
+* how a strong proposal is structured
+* how ideas are communicated clearly
+* how timelines are planned realistically
+* how technical details are presented
+
+Reading those proposals gave me a blueprint.
+
+Not something to copy, but something to learn from.
+
+Then I started drafting my own proposal — slowly, carefully, and with a much clearer understanding of the system than I had when I first began this journey.
+
+## Where I Stand Today
+
+Looking back, this phase felt different from the earlier stages.
+
+Previously, most of my time was spent learning concepts and understanding systems.
+
+Now, the focus has shifted toward:
+
+* identifying a meaningful problem
+* understanding its technical depth
+* preparing a concrete plan to solve it
+
+That transition marks an important step — moving from learning the system to contributing to it.
+
+And as I write this, the timeline has brought me to the present.
+
+This blog captures the journey up to today — from exploring issues and discovering the Copy-on-Write optimization problem, to studying the mechanism, experimenting with it, and beginning the proposal drafting process.
+
+I believe this will likely be the **last or second-to-last entry** in this series before submitting my proposal.
+
+Regardless of the outcome, this journey has already taught me something valuable:
+
+Progress in low-level systems doesn't happen suddenly.
+It happens gradually — through patience, persistence, and a willingness to understand the system before trying to change it.`,
+    },
 ];
