@@ -445,4 +445,211 @@ Regardless of the outcome, this journey has already taught me something valuable
 Progress in low-level systems doesn't happen suddenly.
 It happens gradually — through patience, persistence, and a willingness to understand the system before trying to change it.`,
     },
+    {
+        slug: "watching-copy-on-write-happen",
+        title: "Watching Copy-on-Write Happen: Building a Real Proof of Concept for My CRIU Proposal",
+        date: "2026-03-31",
+        tags: ["open-source", "linux", "criu", "copy-on-write", "systems-programming", "memory", "gsoc"],
+        content: `# Watching Copy-on-Write Happen: Building a Real Proof of Concept for My CRIU Proposal
+
+While preparing my proposal on optimizing Copy-on-Write (COW) memory dumping in CRIU, I reached a point where reading papers and diagrams stopped being enough.
+
+I wanted to see the mechanism happen.
+
+Not conceptually.
+Not theoretically.
+But physically — in memory.
+
+So instead of continuing to read, I decided to build a small proof of concept that could answer one simple question:
+
+**Can I reliably detect when a Copy-on-Write event occurs?**
+
+That became the foundation of this experiment.
+
+## The Core Idea
+
+Copy-on-Write is usually explained in a single sentence:
+
+> Memory is shared until someone writes to it.
+
+But that explanation hides the real question:
+
+**How do you know the copy actually happened?**
+
+To answer that, I focused on observing physical memory changes, not just program behavior.
+
+The plan was straightforward:
+
+1. Allocate memory
+2. Fork a child process
+3. Compare the physical frame numbers (PFNs) of the shared page
+4. Trigger a write in the child
+5. Compare the PFNs again
+
+If the PFN changed, that would be the exact moment when Copy-on-Write occurred.
+
+## The First Working Experiment
+
+The first version of the program looked roughly like this:
+
+\`\`\`c
+int *ptr = mmap(NULL, 4096,
+                PROT_READ | PROT_WRITE,
+                MAP_PRIVATE | MAP_ANONYMOUS,
+                -1, 0);
+
+*ptr = 42;
+
+pid_t pid = fork();
+
+if (pid == 0) {
+    sleep(2);
+    *ptr = 100;  // trigger COW
+}
+\`\`\`
+
+Both processes initially pointed to the same memory page.
+
+The interesting part was reading the physical frame number from:
+
+\`\`\`
+/proc/<pid>/pagemap
+\`\`\`
+
+That file exposes the mapping between virtual pages and physical frames.
+
+## What I Actually Observed
+
+Before the child wrote to the page, both processes shared the same physical frame.
+
+Example output:
+
+\`\`\`
+Parent PFN: 0x1a3f
+Child PFN:  0x1a3f
+\`\`\`
+
+After the write:
+
+\`\`\`
+Parent PFN: 0x1a3f
+Child PFN:  0x2b7c
+\`\`\`
+
+That was the moment Copy-on-Write became real to me.
+
+Not a diagram.
+Not a definition.
+A physical memory change.
+
+Two processes that once shared memory were now pointing to different physical pages.
+
+## The First Unexpected Problem
+
+The experiment didn't work immediately.
+
+At first, every PFN value returned:
+
+\`\`\`
+0
+\`\`\`
+
+No matter what I did.
+
+It turned out this wasn't a bug in the code — it was a permission issue.
+
+Modern Linux kernels restrict access to \`/proc/<pid>/pagemap\` for security reasons. Reading physical frame numbers requires elevated privileges.
+
+Running the program as root fixed it:
+
+\`\`\`bash
+sudo ./cow_poc
+\`\`\`
+
+That small obstacle was a useful reminder:
+
+> Low-level experiments often fail for environmental reasons, not logical ones.
+
+## Making the Behavior Reproducible
+
+Once the basic experiment worked, I expanded it slightly.
+
+I added:
+
+- repeated PFN checks
+- controlled delays
+- logging before and after writes
+
+The goal was not performance — it was repeatability.
+
+I wanted the Copy-on-Write event to be observable every time the program ran.
+
+Eventually, the output stabilized into a predictable pattern:
+
+1. Parent and child share a page
+2. Child writes
+3. Child receives a new physical frame
+
+That consistency made the mechanism trustworthy.
+
+## Connecting This to the Real Optimization Problem
+
+While building this proof of concept, another design question naturally came up.
+
+In Linux, memory modifications can also be tracked using the **soft-dirty mechanism**, which marks pages that have been written to since the last checkpoint.
+
+So a natural question is:
+
+> Are PFN comparison and soft-dirty tracking solving the same problem, or are they detecting different kinds of memory changes?
+
+At this stage, I don't have a complete answer yet.
+
+One open question I've been thinking about is whether PFN comparison and soft-dirty tracking are solving the same problem or different ones — I plan to explore that further during implementation.
+
+That question will likely influence how the optimization is designed inside CRIU.
+
+## Why This Matters for CRIU
+
+CRIU depends heavily on detecting memory changes efficiently.
+
+When dumping process memory, the system must decide:
+
+- which pages are unchanged
+- which pages were modified
+- which pages need to be written to disk
+
+Copy-on-Write makes that decision more complicated — because shared pages can silently diverge.
+
+This experiment didn't optimize CRIU directly.
+
+But it validated the key assumption behind the proposal:
+
+**memory state changes can be detected and measured reliably.**
+
+And that's the starting point for any meaningful optimization.
+
+## The Repository
+
+I documented the experiment and supporting code here: [shresth2405/Proof_of_concept](https://github.com/shresth2405/Proof_of_concept)
+
+The repository contains:
+
+- the C program used to trigger Copy-on-Write
+- code for reading \`/proc/<pid>/pagemap\`
+- example outputs from repeated runs
+- notes explaining the observed behavior
+
+Keeping the implementation public made the learning process more transparent and easier to revisit later.
+
+## Where This Leaves Me
+
+At this point, the proposal is drafted, the proof of concept is implemented, and the submission deadline is approaching.
+
+This will likely be the final or second-to-last entry in this series before submission.
+
+Regardless of the outcome, this experiment gave me something valuable:
+
+Not just an idea —
+but evidence.`,
+    },
 ];
